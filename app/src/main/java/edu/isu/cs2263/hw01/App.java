@@ -39,7 +39,7 @@ public class App {
       //No argument, displays unique help message
       String tooManyArg = "Too many arguments please provide a single file name.";
       if(args.length <= 0){
-        System.out.println("No argument provided. \nUsage gradle run --args='[Argument]'\nuse '-h for a list of arguments'");
+        System.out.println("No argument provided. \nUsage gradle run --args='[Argument]'\nE.G: gradle run --args='-h' for a list of arguments");
       }
       else if(cmd.hasOption("h")){
         app.help();
