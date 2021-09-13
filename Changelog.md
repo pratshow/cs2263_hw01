@@ -6,6 +6,12 @@ This project used [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [1.1.0] - 2021 - 09 - 13
+### Added
+ - Added the ability to evaluate expressions from the command line or from a file using '-b [file]'
+ - The command line can enter "live mode" when you use 'gradle run' and simulate a terminal where you can use all the commands. (P.S if launching in live mode I suggest using 'gradle --console plain run' so it looks a lot nicer.
+ - Added a dummy math.txt file with some expressions to evalue when using '-b' or '--batch'
+
 ## [1.0.0] - 2021 - 09 - 10
 ### Added
  - Added basic CLI functionality.
