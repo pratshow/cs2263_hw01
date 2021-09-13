@@ -10,19 +10,87 @@ import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
+import java.io.*;
+import java.util.*;
 
 public class App {
     // Output for the help command
     private void help(){
       System.out.println("usage: Calc [OPTIONS]\nEvaluation of simple mathematical expressions\n-b,--batch <file>    batch file containing expressions to evaluate\n-h,--help            print usage message\n-o,--output <file>   output file:");
     }
+
     //batch and output just copy the next argument, it does not check if it's a file.
     private void batch(String[] args){
-      System.out.println("Batch value: " + args[1]);
+      BatchInput batch = new BatchInput();
+      batch.readFile(args[1]);
+      //System.out.println("Batch value: " + args[1]);
+      //eval(args, 2);
     }
+
     private void output(String[] args){
       System.out.println("Batch value: " + args[1]);
+      eval(args, 2);
     }
+
+    //If no argument is given enter "live mode".
+    public void loopInput(Options options) throws ParseException{
+      ConsoleInput cli = new ConsoleInput();
+      cli.loopCli(options);
+      }
+
+    public void checkCmd(Options options, String[] args) throws ParseException{
+      //Parcser for delimiting the string from the command line.
+      CommandLineParser parser = new DefaultParser();
+      CommandLine cmd = parser.parse(options, args);
+
+      //No argument, displays unique help message
+      String tooManyArg = "Too many arguments please provide a single file name.";
+      if(args.length <= 0){
+        loopInput(options);
+      }
+      else if(cmd.hasOption("h")){
+        help();
+      }
+      //Simply passing the array of strings and using index 1(provided file.)
+      else if(cmd.hasOption("b")){
+        //Minor error catching
+        batch(args);
+      }
+      else if(cmd.hasOption("o")){
+        output(args);
+      }
+      else{
+        int total = eval(args, 0);
+        printTotal(total);
+        //System.out.println("Not a reconized command, use `-h` or `--help` for a list of commands");
+      }
+    }
+
+    //method to evaluate the expression
+    public int eval(String[] expression, int start){ //start represents if you put -b [file] [equation] or simply [equation] to get the right index
+      int total = Integer.parseInt(expression[start]);    // Converting string to int
+      for (int i = (1 + start); i < expression.length; i++){
+        char op = expression[i].charAt(0);          //Converting string to char
+        i++;
+        int number = Integer.parseInt(expression[i]);
+        switch (op){  //Case to evaluate the operater
+          case '+': total = (total + number);
+            break;
+          case '-': total = (total - number);
+            break;
+          case '*': total = (total * number);
+            break;
+          case '/': total = (total / number);
+            break;
+      }
+    }
+    return total;
+  }
+
+  //Simply prints the total
+  public void printTotal(int total){
+    System.out.println("    ->" + total);
+  }
 
     public static void main(String[] args) throws ParseException{
       //Main class object
@@ -32,31 +100,6 @@ public class App {
       options.addOption("h", "help", false, "displays list of commands");
       options.addOption("b", "batch", false, "processes the provided file");
       options.addOption("o", "output", false, "sends the output to the provided file and standard output");
-
-      //Parcser for delimiting the string from the command line.
-      CommandLineParser parser = new DefaultParser();
-      CommandLine cmd = parser.parse(options, args);
-      //No argument, displays unique help message
-      String tooManyArg = "Too many arguments please provide a single file name.";
-      if(args.length <= 0){
-        System.out.println("No argument provided. \nUsage gradle run --args='[Argument]'\nE.G: gradle run --args='-h' for a list of arguments");
-      }
-      else if(cmd.hasOption("h")){
-        app.help();
-      }
-      //Simply passing the array of strings and using index 1(provided file.)
-      else if(cmd.hasOption("b")){
-        //Minor error catching
-        if (args.length >= 3){
-          System.out.println(tooManyArg);
-        }
-        app.batch(args);
-      }
-      else if(cmd.hasOption("o")){
-        if (args.length >= 3){
-          System.out.println(tooManyArg);
-        }
-        app.output(args);
-      }
+      app.checkCmd(options, args);
     }
 }
