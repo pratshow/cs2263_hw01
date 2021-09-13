@@ -32,7 +32,7 @@ public class BatchInput implements Input {
   //Method to read the contents of the file and print to terminal
   public void readFile(String file) throws FileNotFoundException, IOException{
     App app = new App();
-    if (checkFile(file) == false){
+    if (checkFile(file) == false){ //Seeing if the file exists
       System.out.println(file + " could not be found. Please ensure the file is in 'cs2263_hw01/app/src/main/java/edu/isu/cs2263/hw01' ");
     }
     else{
