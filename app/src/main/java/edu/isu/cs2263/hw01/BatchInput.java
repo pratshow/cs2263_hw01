@@ -3,6 +3,7 @@ package edu.isu.cs2263.hw01;
 import java.util.Scanner;
 import java.io.File;
 import java.io.IOException;
+import java.io.FileNotFoundException;
 
 public class BatchInput implements Input {
 
@@ -15,7 +16,7 @@ public class BatchInput implements Input {
   }
 
   //Check to see if the file is valid
-  public boolean checkFile(String file){
+  public boolean checkFile(String file) throws FileNotFoundException{
     try{
       boolean isFile = new File(file).isFile();
       System.out.println(isFile + " was returned");
@@ -28,14 +29,14 @@ public class BatchInput implements Input {
   }
 
   //Method to read the contents of the file and print to terminal
-  public void readFile(String file){
+  public void readFile(String file) throws FileNotFoundException{
     App app = new App();
     if (checkFile(file) == false){
       System.out.println(file + " does not exist, please specify a real file");
     }
     else{
       File readFile = new File(file);
-      Scanner scanner = new Scanner(file);
+      Scanner scanner = new Scanner(readFile);
       String expressionString = scanner.useDelimiter("\\n").next();
       String[] expressionArr = expressionString.split(" ");
       String input = getInput(expressionArr, expressionArr.length);

@@ -20,7 +20,7 @@ public class App {
     }
 
     //batch and output just copy the next argument, it does not check if it's a file.
-    private void batch(String[] args){
+    private void batch(String[] args) {
       BatchInput batch = new BatchInput();
       batch.readFile(args[1]);
       //System.out.println("Batch value: " + args[1]);
