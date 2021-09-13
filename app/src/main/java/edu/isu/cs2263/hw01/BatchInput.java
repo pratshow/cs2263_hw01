@@ -1,9 +1,7 @@
 package edu.isu.cs2263.hw01;
 
 import java.util.Scanner;
-import java.io.File;
-import java.io.IOException;
-import java.io.FileNotFoundException;
+import java.io.*;
 
 public class BatchInput implements Input {
 
@@ -16,33 +14,38 @@ public class BatchInput implements Input {
   }
 
   //Check to see if the file is valid
-  public boolean checkFile(String file) throws FileNotFoundException{
-    try{
-      boolean isFile = new File(file).isFile();
-      System.out.println(isFile + " was returned");
-      return isFile;
+  public boolean checkFile(String usrFile) throws FileNotFoundException{
+    //This is the dir where the file should be placed
+    File directory = new File("./src/main/java/edu/isu/cs2263/hw01/");
+    boolean found = false;
+
+    File[] files = directory.listFiles(); // Array of files for all the files in the dir
+    for (File file : files) { //Iterate through all the files until a name matches
+        if (file.getName().equals(usrFile)) {
+          found = true;
+          return found;
+        }
     }
-    catch (Exception e){
-      System.out.println("I was caught!");
-      return false;
-    }
+      return found;
   }
 
   //Method to read the contents of the file and print to terminal
-  public void readFile(String file) throws FileNotFoundException{
+  public void readFile(String file) throws FileNotFoundException, IOException{
     App app = new App();
     if (checkFile(file) == false){
-      System.out.println(file + " does not exist, please specify a real file");
+      System.out.println(file + " could not be found. Please ensure the file is in 'cs2263_hw01/app/src/main/java/edu/isu/cs2263/hw01' ");
     }
     else{
-      File readFile = new File(file);
-      Scanner scanner = new Scanner(readFile);
-      String expressionString = scanner.useDelimiter("\\n").next();
-      String[] expressionArr = expressionString.split(" ");
-      String input = getInput(expressionArr, expressionArr.length);
-      System.out.println(input); // Prints the expression from the file
-      int total = app.eval(expressionArr, 0);
-      app.printTotal(total);
+      file = ("./src/main/java/edu/isu/cs2263/hw01/" + file); // Full path name to file
+      try (BufferedReader br = new BufferedReader(new FileReader(file))){
+        String expressionString;
+        while((expressionString = br.readLine()) != null){ // Read every line in the file one at a time
+          System.out.println(expressionString); // Print the line
+          String[] expressionArr = expressionString.split(" "); //Split into a array and evaluate and print to terminal
+          int total = app.eval(expressionArr, 0);
+          app.printTotal(total);
+        }
+      }
     }
   }
 

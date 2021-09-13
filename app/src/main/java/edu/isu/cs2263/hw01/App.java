@@ -20,25 +20,25 @@ public class App {
     }
 
     //batch and output just copy the next argument, it does not check if it's a file.
-    private void batch(String[] args) {
+    private void batch(String[] args) throws FileNotFoundException, IOException{
       BatchInput batch = new BatchInput();
       batch.readFile(args[1]);
       //System.out.println("Batch value: " + args[1]);
       //eval(args, 2);
     }
 
-    private void output(String[] args){
+    private void output(String[] args) throws IOException{
       System.out.println("Batch value: " + args[1]);
       eval(args, 2);
     }
 
     //If no argument is given enter "live mode".
-    public void loopInput(Options options) throws ParseException{
+    public void loopInput(Options options) throws ParseException, FileNotFoundException, IOException{
       ConsoleInput cli = new ConsoleInput();
       cli.loopCli(options);
       }
 
-    public void checkCmd(Options options, String[] args) throws ParseException{
+    public void checkCmd(Options options, String[] args) throws ParseException, FileNotFoundException, IOException{
       //Parcser for delimiting the string from the command line.
       CommandLineParser parser = new DefaultParser();
       CommandLine cmd = parser.parse(options, args);
@@ -92,7 +92,7 @@ public class App {
     System.out.println("    ->" + total);
   }
 
-    public static void main(String[] args) throws ParseException{
+    public static void main(String[] args) throws ParseException, FileNotFoundException, IOException{
       //Main class object
       App app = new App();
       //Options objects for -h, -b and -o

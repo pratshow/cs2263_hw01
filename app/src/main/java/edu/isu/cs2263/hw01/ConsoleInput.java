@@ -3,6 +3,7 @@ package edu.isu.cs2263.hw01;
 import java.util.Scanner;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.Options;
+import java.io.*;
 
 public class ConsoleInput implements Input {
   //Reconstructs the input from the teminal to print
@@ -15,7 +16,7 @@ public class ConsoleInput implements Input {
   }
 
   //If no argument is given enter "live mode".
-  public void loopCli(Options options) throws ParseException{
+  public void loopCli(Options options) throws ParseException, FileNotFoundException, IOException{
     App app = new App();
     //Making a scanner for live cmd line with whitespace as a delimiter.
     Scanner scanner = new Scanner(System.in);
