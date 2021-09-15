@@ -1,8 +1,14 @@
+/*
+Show Pratoomratana - CS2263 - HW1
+V1.2.0
+*/
+
 package edu.isu.cs2263.hw01;
 
 import java.util.Scanner;
 import java.io.*;
 
+//Class for reading equations from a file.
 public class BatchInput implements Input {
 
   public String getInput(String[] input, int length){ //Reconstructs input from array of strings.
@@ -37,7 +43,7 @@ public class BatchInput implements Input {
     }
     else{
       file = ("./src/main/java/edu/isu/cs2263/hw01/" + file); // Full path name to file
-      try (BufferedReader br = new BufferedReader(new FileReader(file))){
+      try (BufferedReader br = new BufferedReader(new FileReader(file))){ //Using FileReader and putting it in a buffer
         String expressionString;
         while((expressionString = br.readLine()) != null){ // Read every line in the file one at a time
           System.out.println(expressionString); // Print the line
